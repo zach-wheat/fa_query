@@ -5,15 +5,15 @@ from sub_pages import subpage_query
 
 def landingpage_query(attempts=3):
     
-    """retrieves div elem containing data for all financial advisor webpages and saves them to a file in file_path specified"""
+    """retrieves div elem containing webpage links and names for all financial advisors and saves them to a file in file_path specified"""
 
     url = 'https://www.xyz.com/department/financial-advisors/'
     file_path = 'filepath'
 
     headers = {'user-agent':
-               'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) '
+               'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
                'AppleWebKit/537.36 (KHTML, like Gecko) '
-               'Chrome/73.0.3683.86 Safari/537.36'}
+               'Chrome/95.0.4638.54 Safari/537.36'}
 
     while attempts != 0:
         try:
@@ -28,7 +28,7 @@ def landingpage_query(attempts=3):
     advisors = soup.findAll('div', class_='container')
     
     with open(file_path, 'w') as file:
-        file.write(advisors)
+        file.write(str(advisors))
     
     return
 
@@ -53,6 +53,7 @@ def get_name():
     """reads data from file_path and extracts each advisor's name"""
 
     file_path = 'filepath'
+    
     with open(file_path, 'r') as file:
         soup = BeautifulSoup(file.read(), features="html.parser")
         advisors = soup.findAll('div', class_='name-title')
@@ -62,9 +63,11 @@ def get_name():
     return names
 
 
-def output():
+def main():
+    
     """prints link to each advisor's webpage and builds an email address"""
     
+    landingpage_query()
     names = get_name()
     urls = get_url()
 
@@ -73,4 +76,7 @@ def output():
         print(urls[i] + ' ^ ' + names[i].split()[0] + '.' + names[i].split()[-1] + '@xyz.com')
     return
 
+
+if __name__ == "__main__":
+    main()
 
