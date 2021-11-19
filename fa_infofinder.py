@@ -3,6 +3,20 @@ from bs4 import BeautifulSoup
 from sub_pages import subpage_query
 
 
+def main():
+    
+    """prints link to each advisor's webpage and builds an email address"""
+    
+    landingpage_query()
+    names = get_name()
+    urls = get_url()
+
+    for i in range(len(names)):
+        # ^ used as delimiter
+        print(urls[i] + ' ^ ' + names[i].split()[0] + '.' + names[i].split()[-1] + '@xyz.com')
+    return
+
+
 def landingpage_query(attempts=3):
     
     """retrieves div elem containing webpage links and names for all financial advisors and saves them to a file in file_path specified"""
@@ -33,21 +47,6 @@ def landingpage_query(attempts=3):
     return
 
 
-def get_url():
-
-    """reads data from file_path and extracts the link to each advisor's webpage"""
-
-    file_path = 'filepath'
-
-    with open(file_path, 'r') as file:
-        soup = BeautifulSoup(file.read(), features="html.parser")
-        advisors = soup.findAll('a', class_='btn adv-btn')
-        urls = []
-        for fa in advisors:
-            urls.append(fa.get('href'))
-    return urls
-
-
 def get_name():
 
     """reads data from file_path and extracts each advisor's name"""
@@ -63,20 +62,20 @@ def get_name():
     return names
 
 
-def main():
-    
-    """prints link to each advisor's webpage and builds an email address"""
-    
-    landingpage_query()
-    names = get_name()
-    urls = get_url()
+def get_url():
 
-    for i in range(len(names)):
-        # ^ used as delimiter
-        print(urls[i] + ' ^ ' + names[i].split()[0] + '.' + names[i].split()[-1] + '@xyz.com')
-    return
+    """reads data from file_path and extracts the link to each advisor's webpage"""
+
+    file_path = 'filepath'
+
+    with open(file_path, 'r') as file:
+        soup = BeautifulSoup(file.read(), features="html.parser")
+        advisors = soup.findAll('a', class_='btn adv-btn')
+        urls = []
+        for fa in advisors:
+            urls.append(fa.get('href'))
+    return urls
 
 
 if __name__ == "__main__":
     main()
-
